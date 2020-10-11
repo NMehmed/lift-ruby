@@ -1,13 +1,15 @@
 require './lib/lift.rb'
+require './lib/floor.rb'
 
 def get_lift_course(queues, capacity)
-  lift = Lift.new(queues, capacity)
+  puts "#{queues}"
+  floors = queues.each_with_index.map {|queue, index| Floor.new(queue, index)}
+  lift = Lift.new(floors, capacity)
 
-  return lift.run()
+  return lift.make_a_run()
 end
 
 RSpec.describe "Lift course" do
-  cart = Cart.new
 
   it "should simple go up" do
     expect(get_lift_course([
