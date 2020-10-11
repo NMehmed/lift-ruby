@@ -17,7 +17,7 @@ class Floor
   end
 
   def has_people
-    has_people_going_up() || has_people_going_up()
+    has_people_going_up() || has_people_going_down()
   end
 
   def has_people_going_up

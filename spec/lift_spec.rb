@@ -2,7 +2,6 @@ require './lib/lift.rb'
 require './lib/floor.rb'
 
 def get_lift_course(queues, capacity)
-  puts "#{queues}"
   floors = queues.each_with_index.map {|queue, index| Floor.new(queue, index)}
   lift = Lift.new(floors, capacity)
 
@@ -45,6 +44,18 @@ RSpec.describe "Lift course" do
       [], # 5
       [], # 6
     ], 5)).to eq([0, 1, 2, 3, 4, 5, 0])
+  end
+
+  it "should be smart and go all the way up than down" do
+    expect(get_lift_course([
+      [],
+      [0],
+      [],
+      [],
+      [2],
+      [3],
+      []
+   ], 5)).to eq([0, 5, 4, 3, 2, 1, 0])
   end
 
   it "should respect capacity" do
