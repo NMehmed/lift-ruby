@@ -49,7 +49,11 @@ class Lift
       move()
 
       while @floors.any?{ |floor| floor.passengers?() } || @passengers.length() != 0
-        @floor_number = @is_direction_up ? @floor_number + 1 : @floor_number - 1
+        if @passengers.any? { |passenger| passenger.mechanic?() }
+          @floor_number = @passengers.find { |passenger| passenger.mechanic?() }.floor_number
+        else
+          @floor_number = @is_direction_up ? @floor_number + 1 : @floor_number - 1
+        end
 
         if move() && stops.last() != @floor_number
           stops.push @floor_number

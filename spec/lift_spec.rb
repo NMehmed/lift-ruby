@@ -93,4 +93,40 @@ RSpec.describe "Lift course" do
       [] # 6
     ], 5)).to eq([0, 3, 5, 4, 0, 3, 5, 4, 0])
   end
+
+  it "should go to mechanics floor first" do
+    expect(get_lift_course([
+      [], # G
+      [], # 1
+      [Passenger.new(3), Passenger.new(5, true)], # 2
+      [], # 3
+      [], # 4
+      [], # 5
+      [], # 6
+    ], 5)).to eq([0, 2, 5, 3, 0])
+  end
+
+  it "should go to passengers floor because he is first in queue and then mechanics floor" do
+    expect(get_lift_course([
+      [], # G
+      [], # 1
+      [Passenger.new(3), Passenger.new(1, true)], # 2
+      [], # 3
+      [], # 4
+      [], # 5
+      [], # 6
+    ], 5)).to eq([0, 2, 3, 2, 1, 0])
+  end
+
+  it "should go to passengers floor because he is going up and then mechanics floor" do
+    expect(get_lift_course([
+      [], # G
+      [], # 1
+      [Passenger.new(3), Passenger.new(5, true)], # 2
+      [], # 3
+      [], # 4
+      [], # 5
+      [], # 6
+    ], 1)).to eq([0, 2, 3, 2, 5, 0])
+  end
 end
