@@ -19,22 +19,22 @@ class Lift
 
       current_floor = @floors[@floor_number]
 
-      if @passengers.any?(@floor_number)
+      if @passengers.any? { |passenger| passenger.floor_number == @floor_number }
         stop = true
-        @passengers = @passengers.select { |passenger| passenger != @floor_number }
+        @passengers = @passengers.select { |passenger| passenger.floor_number != @floor_number }
       end
 
-      if current_floor.has_people()
-        if @is_direction_up && current_floor.has_people_going_up()
+      if current_floor.passengers?()
+        if @is_direction_up && current_floor.passengers_going_up?()
           stop = true
 
-          while has_free_space() && current_floor.has_people_going_up()
+          while free_space?() && current_floor.passengers_going_up?()
             @passengers.push current_floor.next_going_up()
           end
-        elsif !@is_direction_up && current_floor.has_people_going_down()
+        elsif !@is_direction_up && current_floor.passengers_going_down?()
           stop = true
 
-          while has_free_space() && current_floor.has_people_going_down()
+          while free_space?() && current_floor.passengers_going_down?()
             @passengers.push current_floor.next_going_down()
           end
         end
@@ -48,7 +48,7 @@ class Lift
 
       move()
 
-      while @floors.any?{ |floor| floor.has_people() } || @passengers.length() != 0
+      while @floors.any?{ |floor| floor.passengers?() } || @passengers.length() != 0
         @floor_number = @is_direction_up ? @floor_number + 1 : @floor_number - 1
 
         if move() && stops.last() != @floor_number
@@ -63,7 +63,7 @@ class Lift
       stops
     end
 
-    def has_free_space
+    def free_space?
       @passengers.length() < @capacity
     end
 

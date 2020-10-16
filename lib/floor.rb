@@ -1,30 +1,30 @@
+require './lib/passenger'
+
 class Floor
+
+  attr_reader :floor_number
 
   def initialize(queue, floor)
     @floor_number = floor
 
     @down_queue = queue.select do |passenger|
-      passenger < floor
+      passenger.floor_number < floor
     end
 
     @up_queue = queue.select do |passenger|
-      passenger > floor
+      passenger.floor_number > floor
     end
   end
 
-  def floor_number
-    @floor_number
+  def passengers?
+    passengers_going_up? || passengers_going_down?
   end
 
-  def has_people
-    has_people_going_up() || has_people_going_down()
-  end
-
-  def has_people_going_up
+  def passengers_going_up?
     @up_queue.length() > 0
   end
 
-  def has_people_going_down
+  def passengers_going_down?
     @down_queue.length() > 0
   end
 
